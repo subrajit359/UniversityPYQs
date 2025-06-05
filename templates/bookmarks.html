@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Bookmarks - UniversityPYQ's{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h3><i class="fas fa-bookmark"></i> My Bookmarks</h3>
+            <p class="text-muted">Papers you've saved for later</p>
+
+            {% if papers %}
+            <div class="row">
+                {% for paper in papers %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ paper.title }}</h5>
+                            <p class="card-text">
+                                <strong>Subject:</strong> {{ paper.subject }}<br>
+                                <strong>Year:</strong> {{ paper.year }}<br>
+                                <strong>Semester:</strong> {{ paper.semester }}<br>
+                                {% if paper.course %}
+                                <strong>Course:</strong> {{ paper.course }}<br>
+                                {% endif %}
+                                <strong>Type:</strong> {{ paper.exam_type }}<br>
+                                <small class="text-muted">
+                                    Uploaded: {{ paper.upload_date.strftime('%d %b %Y') }}<br>
+                                    Downloads: {{ paper.download_count }}
+                                </small>
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex justify-content-between">
+                                <a href="{{ url_for('download_paper', paper_id=paper.id) }}" 
+                                   class="btn btn-primary btn-sm">
+                                    <i class="fas fa-download"></i> Download
+                                </a>
+                                <button class="btn btn-outline-danger btn-sm bookmark-btn" 
+                                        data-paper-id="{{ paper.id }}">
+                                    <i class="fas fa-bookmark"></i> Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-bookmark fa-4x text-muted mb-3"></i>
+                <h4>No bookmarks yet</h4>
+                <p class="text-muted">Start bookmarking papers you want to keep track of</p>
+                <a href="{{ url_for('index') }}" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Browse Papers
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
